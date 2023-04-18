@@ -1,4 +1,4 @@
-local network = setmetatable(network or {
+getgenv().network = network or {
     cache = {
         connections = {
             insert = function(self,value)
@@ -33,7 +33,7 @@ local network = setmetatable(network or {
                 warn("Unable to Connect Network")
             end
         else
-            warn("Unable to Identify Remote Network")
+            warn("Unable to Indentify Remote Network")
         end
     end,
     Send = function(self,name,...)
@@ -41,21 +41,17 @@ local network = setmetatable(network or {
         if Remote then
             if Remote:IsA("RemoteEvent") then
                 self.cache.remotes[name] = Remote
-                return Remote:FireServer(...)
+                return Remote.FireServer(Remote,...)
             elseif Remote:IsA("RemoteFunction") then
                 self.cache.remotes[name] = Remote
-                return Remote:InvokeServer(...)
+                return Remote.InvokeServer(Remote,...)
             else
                 warn("Unable to Connect Network")
             end
         else
-            warn("Unable to Identify Remote Network")
+            warn("Unable to Indentify Remote Network")
         end
     end,
-},{
-    __tostring = function()
-        return "NetworkModule"
-    end,
-})
+}
 
 return network
